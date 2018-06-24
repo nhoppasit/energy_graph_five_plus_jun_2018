@@ -1,75 +1,80 @@
-function show26
+function show_graph(en_file,datetext,powermid,powerpk,enpk,onpk,fs)
 %% Design By Nhoppasit Srisurat
 
 %% สร้างแกนเวลาเป็นชั่วโมง
-load('26.mat')
-hhminsec(end) = hhminsec(end-1)+0.0007;
+load(en_file)
+% hhminsec(end) = hhminsec(end-1)+0.0007;
 t = hhminsec*24;
-current = I2A;
-energy = EANetKwh;
+power = PTKw;
+energy = EATNetKwh;
 TimeIn = TimeIN;
 TempIn = TempIN;
 RHIn = RHIN;
-TimeOut = TimeOut;
-TempOut = TempOut;
-RHOut = RHOut;
+TimeOut = TimeOUT;
+TempOut = TempOUT;
+RHOut = RHOUT;
 %% แสดงกราฟเวลา-กระแส และเวลา-KWh
 figure;
 subplot(311)
 hold on
-[ax,h1,h2] = plotyy(t,current,t,energy-energy(1));
+[ax,h1,h2] = plotyy(t,power,t,energy-energy(1));
 grid on
-set(ax(1),'xlim',[0,24])
-set(ax(2),'xlim',[0,24])
-set(ax(1),'ylim',[0,20])
-set(ax(2),'ylim',[0,50])
+set(ax(1),'xlim',[0,24],'fontsize',fs)
+set(ax(2),'xlim',[0,24],'fontsize',fs)
+set(ax(1),'ylim',[0,powerpk])
+set(ax(2),'ylim',[0,enpk])
 set(ax(1), 'YTickMode', 'auto', 'YTickLabelMode', 'auto')
 set(ax(2), 'YTickMode', 'auto', 'YTickLabelMode', 'auto')
 xlabel(ax(1),'Time, h')
-ylabel(ax(1),'Current, Amp')
+ylabel(ax(1),'Power, Kw')
 ylabel(ax(2),'Energy, KWh')
+set(h1,'linewidth',1)
 set(h2,'linewidth',2)
 
 %% แสดงการเปิด
-pCurrent = current>0;
-[pk,loc] = findpeaks(double(pCurrent));
-plot(t(loc),current(loc),'ko');
+pPower = powermid<=power;
+[pk,loc] = findpeaks(double(pPower));
+plot(t(loc),power(loc),'ko');
 
 
 %% Pulse width calculation
-current(current>7) = 10;
-[w,initcross,finalcross] = pulsewidth(current,t);
+power(powermid<=power) = 10;
+[w,initcross,finalcross] = pulsewidth(power,t);
 pkcnt = length(w);
-title(['Current vs Time & Energy vs Time (ON-OFF = ' num2str(pkcnt) ' times) / 26-May-2018'])
+title(['Power vs Time & Energy vs Time (ON-OFF = ' num2str(pkcnt) ' times) / ' datetext])
 
 %% Pulse width vs time
 subplot(312)
 bar((initcross+finalcross)/2,w*60);
-axis([0,24,0,10])
+set(gca,'fontsize',fs);
+axis([0,24,0,onpk])
 grid on
-title('Current Transmission Width vs Time / 26-May-2018')
+title(['Power Transmission Period vs Time / ' datetext])
 xlabel('Time, h')
-ylabel('Current ON Time, min')
+ylabel('Power ON Time, min')
 
 %% Temperature & Humidity Inside
 subplot(313)
 [ax,h1,h2] = plotyy(TimeIn*24,TempIn,TimeIn*24,RHIn);
+set(ax(1),'fontsize',fs)
+set(ax(2),'fontsize',fs)
 grid on
 xlabel(ax(1),'Time, h')
 xlabel(ax(2),'Time, h')
 ylabel(ax(1),'Temperature, C')
 ylabel(ax(2),'Humidity, %RH')
 set(ax(1),'ycolor','r')
+set(ax(2),'ycolor','b')
 set(h1,'color','red','linewidth',2)
 set(h2,'color','b','linewidth',2)
 
 %% Temperature & Humidity Outside
 hold(ax(1),'on')
-plot(ax(1),TimeOut*24,TempOut,'r-.','linewidth',1)
+plot(ax(1),TimeOut*24,TempOut,'r-.','linewidth',2)
 hold(ax(2),'on')
-plot(ax(2),TimeOut*24,RHOut,'g-.','linewidth',1)
+plot(ax(2),TimeOut*24,RHOut,'b-.','linewidth',2)
 
-title('Temperature and Humidity vs Time (Inside - solid line, Outside - dash line) / 26-May-2018')
+title(['Temperature (Red) and Humidity (Blue) vs Time (Inside - solid line, Outside - dash line) / ' datetext])
 
 set(ax(1),'xlim',[0,24])
 set(ax(2),'xlim',[0,24])

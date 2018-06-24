@@ -1,4 +1,5 @@
-load 26
+function energybar(mat_file)
+load mat_file
 hourly_energy=reshape(EANetKwh,24,60)
 hourly_energy=reshape(EANetKwh,60,24)
 plot(hourly_energy)
