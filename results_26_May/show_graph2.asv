@@ -1,10 +1,11 @@
-function show_graph(en_file,datetext,powermid,powerpk,enpk,onpk,fs)
+function show_graph2(en_file,datetext,powermid,powerpk,enpk,onpk,fs)
 %% Design By Nhoppasit Srisurat
 
 %% สร้างแกนเวลาเป็นชั่วโมง
 load(en_file)
 % hhminsec(end) = hhminsec(end-1)+0.0007;
-t = hhminsec*24;
+si = 480;
+t = hhminsec(si:end)*24;
 power = PTKw;
 energy = EATNetKwh;
 TimeIn = TimeIN;
