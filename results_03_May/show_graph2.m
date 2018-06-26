@@ -1,18 +1,20 @@
-function show_graph(en_file,datetext,powermid,powerpk,enpk,onpk,fs)
+function show_graph2(en_file,datetext,powermid,powerpk,enpk,onpk,fs)
 %% Design By Nhoppasit Srisurat
 
 %% สร้างแกนเวลาเป็นชั่วโมง
 load(en_file)
 % hhminsec(end) = hhminsec(end-1)+0.0007;
-t = hhminsec*24;
-power = PTKw;
-energy = EATNetKwh;
-TimeIn = TimeIN;
-TempIn = TempIN;
-RHIn = RHIN;
-TimeOut = TimeOUT;
-TempOut = TempOUT;
-RHOut = RHOUT;
+si = 588;
+t = hhminsec(si:end)*24;
+power = PTKw(si:end);
+energy = EATNetKwh(si:end);
+si = 50;
+TimeIn = TimeIN(si:end);
+TempIn = TempIN(si:end);
+RHIn = RHIN(si:end);
+TimeOut = TimeOUT(si:end);
+TempOut = TempOUT(si:end);
+RHOut = RHOUT(si:end);
 %% แสดงกราฟเวลา-กระแส และเวลา-KWh
 figure;
 subplot(311)
@@ -46,22 +48,27 @@ title(['Power vs Time & Energy vs Time (ON-OFF = ' num2str(pkcnt) ' times) / ' d
 %% Pulse width vs time
 subplot(312)
 bar((initcross+finalcross)/2,w*60);
-set(gc
+set(gca,'fontsize',fs);
 axis([0,24,0,onpk])
 grid on
-title(['Power Transmission Width vs Time / ' datetext])
+title(['Power Transmission Period vs Time / ' datetext])
 xlabel('Time, h')
 ylabel('Power ON Time, min')
+text(1,onpk/2+10,['Comp. ON: ' num2str(round(sum(w*60))) ' min'],'fontsize',14,'background','white')
+text(1,onpk/2,['Comp. OFF: ' num2str(round((t(end)-t(1))*60 - sum(w*60))) ' min'],'fontsize',14,'background','white')
 
 %% Temperature & Humidity Inside
 subplot(313)
 [ax,h1,h2] = plotyy(TimeIn*24,TempIn,TimeIn*24,RHIn);
+set(ax(1),'fontsize',fs)
+set(ax(2),'fontsize',fs)
 grid on
 xlabel(ax(1),'Time, h')
 xlabel(ax(2),'Time, h')
 ylabel(ax(1),'Temperature, C')
 ylabel(ax(2),'Humidity, %RH')
 set(ax(1),'ycolor','r')
+set(ax(2),'ycolor','b')
 set(h1,'color','red','linewidth',2)
 set(h2,'color','b','linewidth',2)
 

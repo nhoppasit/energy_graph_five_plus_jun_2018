@@ -47,11 +47,12 @@ dEnergy0612 = diff(hourly_energy);
 load('en_0613')
 hourly_energy = max(reshape(EATNetKwh-EATNetKwh(1),60,24));
 dEnergy0613 = diff(hourly_energy);
-load('en_061114')
-hourly_energy = max(reshape(EATNetKwh-EATNetKwh(1),60,24));
-dEnergy061114 = diff(hourly_energy);
+% load('en_061114')
+% hourly_energy = max(reshape(EATNetKwh-EATNetKwh(1),60,24));
+% dEnergy061114 = diff(hourly_energy);
 
-datapack3 = [dEnergy0612;dEnergy0613;dEnergy061114];
+% datapack3 = [dEnergy0612;dEnergy0613;dEnergy061114];
+datapack3 = [dEnergy0612;dEnergy0613];
 
 dEnergyAvg3 = mean(datapack3);
 dEnergyStd3 = std(datapack3);
