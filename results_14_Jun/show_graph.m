@@ -4,9 +4,10 @@ function show_graph(en_file,datetext,powermid,powerpk,enpk,onpk,fs)
 %% สร้างแกนเวลาเป็นชั่วโมง
 load(en_file)
 % hhminsec(end) = hhminsec(end-1)+0.0007;
-t = hhminsec*24;
-power = PTKw;
-energy = EATNetKwh;
+se = 660;
+t = hhminsec(1:se)*24;
+power = PTKw(1:se);
+energy = EATNetKwh(1:se);
 TimeIn = TimeIN;
 TempIn = TempIN;
 RHIn = RHIN;
@@ -52,6 +53,8 @@ grid on
 title(['Power Transmission Period vs Time / ' datetext])
 xlabel('Time, h')
 ylabel('Power ON Time, min')
+text(1,onpk/2+3,['Comp. ON: ' num2str(round(sum(w*60))+1) ' min'],'fontsize',14,'background','white')
+text(1,onpk/2,['Comp. OFF: ' num2str(round((t(end)-t(1))*60 - sum(w*60))) ' min'],'fontsize',14,'background','white')
 
 %% Temperature & Humidity Inside
 subplot(313)
