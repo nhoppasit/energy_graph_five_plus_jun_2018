@@ -1,18 +1,19 @@
-function show_graph(en_file,datetext,powermid,powerpk,enpk,onpk,fs)
+function show_graph2(en_file,datetext,powermid,powerpk,enpk,onpk,fs)
 %% Design By Nhoppasit Srisurat
 
 %% สร้างแกนเวลาเป็นชั่วโมง
 load(en_file)
 % hhminsec(end) = hhminsec(end-1)+0.0007;
-t = hhminsec*24;
-power = PTKw;
-energy = EATNetKwh;
-TimeIn = TimeIN;
-TempIn = TempIN;
-RHIn = RHIN;
-TimeOut = TimeOUT;
-TempOut = TempOUT;
-RHOut = RHOUT;
+se = 608;
+t = hhminsec(1:se)*24;
+power = PTKw(1:se);
+energy = EATNetKwh(1:se);
+TimeIn = TimeIN(1:se);
+TempIn = TempIN(1:se);
+RHIn = RHIN(1:se);
+TimeOut = TimeOUT(1:se);
+TempOut = TempOUT(1:se);
+RHOut = RHOUT(1:se);
 %% แสดงกราฟเวลา-กระแส และเวลา-KWh
 figure;
 subplot(311)
