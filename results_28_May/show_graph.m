@@ -52,6 +52,8 @@ grid on
 title(['Power Transmission Period vs Time / ' datetext])
 xlabel('Time, h')
 ylabel('Power ON Time, min')
+text(1,onpk/2+3,['Comp. ON: ' num2str(round(sum(w*60))+1) ' min'],'fontsize',14,'background','white')
+text(1,onpk/2,['Comp. OFF: ' num2str(round((t(end)-t(1))*60 - sum(w*60))) ' min'],'fontsize',14,'background','white')
 
 %% Temperature & Humidity Inside
 subplot(313)
