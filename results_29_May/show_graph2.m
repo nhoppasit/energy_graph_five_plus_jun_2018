@@ -4,7 +4,7 @@ function show_graph2(en_file,datetext,powermid,powerpk,enpk,onpk,fs)
 %% สร้างแกนเวลาเป็นชั่วโมง
 load(en_file)
 % hhminsec(end) = hhminsec(end-1)+0.0007;
-se = 481;
+se = 610;
 t = hhminsec(1:se)*24;
 power = PTKw(1:se);
 energy = EATNetKwh(1:se);
